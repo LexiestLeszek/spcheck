@@ -16,3 +16,15 @@ def levenshtein(source, target):
             cost = int(s != t)
             v1[j + 1], v0[j + 1] = min(v0[j] + cost, v1[j] + 1, v0[j + 1] + 1)
     return v1[-1]
+
+def spell_check(word, candidates):
+    distances = [(candidate, levenshtein(word, candidate)) for candidate in candidates]
+    distances.sort(key=lambda x: x[1])
+    return distances[0][0]
+
+while True:
+
+    dictionary = ["hello", "world", "python", "levenshtein"]
+    word_to_check = input("Write the word you want to spell check (only few are available): ")
+    corrected_word = spell_check(word_to_check, dictionary)
+    print(corrected_word) # Outputs: hello
