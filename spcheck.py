@@ -9,6 +9,7 @@ def levenshtein_distance(s1, s2):
         return len(s1)
 
     previous_row = range(len(s2) + 1)
+    
     for i, c1 in enumerate(s1):
         current_row = [i + 1]
         for j, c2 in enumerate(s2):
@@ -31,7 +32,8 @@ def spell_check(word, word_list, max_distance):
 
 if __name__ == "__main__":
     word_list = ["apple", "banana", "orange", "pear", "peach"]
-    word = "aple"
-    max_distance = 2
+    word = input("type your wrong word: ")
+    #word = "aple"
+    max_distance = 1
     suggestions = spell_check(word, word_list, max_distance)
     print("Suggestions for", word, ":", [s[0] for s in suggestions])
