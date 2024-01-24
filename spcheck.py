@@ -34,4 +34,5 @@ if __name__ == "__main__":
     #word = "aple"
     max_distance = 1
     suggestions = spell_check(word, word_list, max_distance)
-    print("Suggestions for", word, ":", [s[0] for s in suggestions])
+    suggested_words = [s[0] for s in suggestions]
+    print(f'Suggestions for "{word}": {", ".join(suggested_words)}')
