@@ -1,30 +1,37 @@
 import numpy as np
 from collections import Counter
 
-def levenshtein(source, target):
-    if source == target:
-        return 0
-    elif len(source) == 0:
-        return len(target)
-    elif len(target) == 0:
-        return len(source)
-    v0 = np.arange(len(target) + 1)
-    v1 = np.ones(len(target) + 1) * (len(source) + 1)
-    for i, s in enumerate(source):
-        v1[0], v0[0] = min(v0[0] + 1, v1[0] + 1, v0[1] + (s != target[0]))
-        for j, t in enumerate(target):
-            cost = int(s != t)
-            v1[j + 1], v0[j + 1] = min(v0[j] + cost, v1[j] + 1, v0[j + 1] + 1)
-    return v1[-1]
+def levenshtein_distance(s1, s2):
+    if len(s1) < len(s2):
+        return levenshtein_distance(s2, s1)
 
-def spell_check(word, candidates):
-    distances = [(candidate, levenshtein(word, candidate)) for candidate in candidates]
-    distances.sort(key=lambda x: x[1])
-    return distances[0][0]
+    if len(s2) == 0:
+        return len(s1)
 
-while True:
+    previous_row = range(len(s2) + 1)
+    for i, c1 in enumerate(s1):
+        current_row = [i + 1]
+        for j, c2 in enumerate(s2):
+            insertions = previous_row[j + 1] + 1
+            deletions = current_row[j] + 1
+            substitutions = previous_row[j] + (c1 != c2)
+            current_row.append(min(insertions, deletions, substitutions))
+        previous_row = current_row
 
-    dictionary = ["hello", "world", "python", "levenshtein"]
-    word_to_check = input("Write the word you want to spell check (only few are available): ")
-    corrected_word = spell_check(word_to_check, dictionary)
-    print(corrected_word) # Outputs: hello
+    return previous_row[-1]
+
+def spell_check(word, word_list, max_distance):
+    suggestions = []
+    for w in word_list:
+        distance = levenshtein_distance(word, w)
+        if distance <= max_distance:
+            suggestions.append((w, distance))
+    suggestions.sort(key=lambda x: x[1])
+    return suggestions
+
+if __name__ == "__main__":
+    word_list = ["apple", "banana", "orange", "pear", "peach"]
+    word = "aple"
+    max_distance = 2
+    suggestions = spell_check(word, word_list, max_distance)
+    print("Suggestions for", word, ":", [s[0] for s in suggestions])
