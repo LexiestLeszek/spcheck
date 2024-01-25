@@ -29,10 +29,21 @@ def spell_check(word, word_list, max_distance):
     return suggestions
 
 if __name__ == "__main__":
-    word_list = ["apple", "banana", "orange", "pear", "peach"]
-    word = input("type your wrong word: ")
-    #word = "aple"
-    max_distance = 1
-    suggestions = spell_check(word, word_list, max_distance)
-    suggested_words = [s[0] for s in suggestions]
-    print(f'Suggestions for "{word}": {", ".join(suggested_words)}')
+    
+    while True:
+        
+        # from variable
+        #word_list = ["apple", "banana", "orange", "pear", "peach"]
+
+        # from txt file
+        word_list = []
+        with open('word_list.txt', 'r') as file:
+            for line in file:
+                word_list.append(line.strip())
+        
+        word = input("type your wrong word: ")
+        #word = "aple"
+        max_distance = 1
+        suggestions = spell_check(word, word_list, max_distance)
+        suggested_words = [s[0] for s in suggestions]
+        print(f'Suggestions for "{word}": {", ".join(suggested_words)}')
