@@ -1,2 +1,2 @@
 # spcheck
-spell checking using Levenshtein's distance
+A simple spell-checker using the Levenshtein distance algorithm.
